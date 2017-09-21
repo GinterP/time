@@ -106,8 +106,7 @@ export function logTime(spreadsheetId,
                         art,
                         von,
                         bis,
-                        pause,
-                        gesamt) {
+                        pause) {
   return gapi.client.sheets.spreadsheets.values.append({
     spreadsheetId,
     valueInputOption: 'USER_ENTERED',
@@ -119,8 +118,7 @@ export function logTime(spreadsheetId,
       art,
       von,
       bis,
-      pause,
-      gesamt]],
+      pause]],
   }).then(id, checkError);
 }
 

@@ -20,9 +20,15 @@
             <option value='Urlaub'>Urlaub</option>
             <option value='Feiertag'>Feiertag</option>
           </select>
-          <label for='art'>Materialize Select</label>
+          <label for='art'>Art</label>
         </div>
-        <input type='time' v-model='von'>
+        <!-- Von -->
+        <time label='Von' :value.sync='von'></time>
+        <!-- Bis -->
+        <time label='Bis' :value.sync='bis'></time>
+        <!-- Pause -->
+        <pause label='Pause' :value.sync='pause'></pause>
+
       </div>
 
       <div class='row' v-if='saveState !== "saving" && state === "new"'>
@@ -96,6 +102,8 @@
   import getLastRecordsForComponent from './lib/getLastRecordsForComponent.js';
   import getSpreadsheetIdFromComponentRoute from './lib/getSpreadsheetIdFromComponentRoute.js';
   import DateWithoutTime from './DateWithoutTime.vue';
+  import Time from './Time.vue';
+  import Pause from './Pause.vue';
 
   export default {
     data() {
@@ -110,7 +118,6 @@
         von: '',
         bis: '',
         pause: '',
-        gesamt: '',
         saveState: '',
         sheetTitle: ''
       };
@@ -125,7 +132,9 @@
       }
     },
     components: {
-      DateWithoutTime
+      DateWithoutTime,
+      Time,
+      Pause
     },
     route: {
       data() {
@@ -167,11 +176,10 @@
       resetState() {
         this.tag = '';
         this.baustelle = '';
-        this.art = '';
+        this.art = 'Arbeit';
         this.von = '';
         this.bis = '';
         this.pause = '';
-        this.gesamt = '';
 
         this.saveState = 'done';
         this.error = '';
@@ -179,7 +187,9 @@
 
       isNotEmpty() {
         return this.tag && this.baustelle && this.art &&
-          this.von && this.bis && this.pause && this.gesamt;
+          this.von && this.von !== 'Von' &&
+          this.bis && this.bis !== 'Bis' &&
+          this.pause;
       },
 
       logIt() {
@@ -196,8 +206,7 @@
               this.art,
               this.von,
               this.bis,
-              this.pause,
-              this.gesamt)
+              this.pause)
               .then(() => {
                 // TODO: This is not very reliable.
                 this.lastRecords.unshift([
@@ -207,8 +216,7 @@
                   this.art,
                   this.von,
                   this.bis,
-                  this.pause,
-                  this.gesamt
+                  this.pause
                 ]);
 
                 // reset everything here
