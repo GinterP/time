@@ -16,7 +16,7 @@
     </div>
     <div class='container'>
       <div v-if='unknown'>
-        <h3>Checking authentication...<h3>
+        <h3>Checking authentication...</h3>
       </div>
       <div v-if='apiLoaded'>
         <router-view class='view' keep-alive></router-view>
