@@ -2,15 +2,38 @@
   <div>
     <h4>{{sheetTitle}}</h4>
     <form novalidate @submit.prevent='logIt'>
-      <date-without-time label='Tag' :value.sync='tag'></date-without-time>
-      <div class='input-field'>
-        <label for='baustelle'>Baustelle</label>
-        <input id='baustelle' type='text' v-model='baustelle'>
+      <div v-if='saveState !== "saving"'>
+        <!-- Tag -->
+        <date-without-time label='Tag' :value.sync='tag'></date-without-time>
+        <!-- Baustelle -->
+        <div class='input-field'>
+          <label class="active" for='baustelle'>Baustelle</label>
+          <input id='baustelle' type='text' v-model='baustelle'>
+        </div>
+        <!-- Art -->
+        <div class="">
+          <select id='art' v-model='art' class="browser-default">
+            <option value='Arbeit' selected>Arbeit</option>
+            <option value='Lager / Werkstatt'>Lager / Werkstatt</option>
+            <option value='Weiterbildung'>Weiterbildung</option>
+            <option value='Krank'>Krank</option>
+            <option value='Urlaub'>Urlaub</option>
+            <option value='Feiertag'>Feiertag</option>
+          </select>
+          <label for='art'>Materialize Select</label>
+        </div>
+        <input type='time' v-model='von'>
       </div>
 
-      <div class='row' v-if='saveState !== "saving"'>
-        <input type='submit' class='waves-effect waves-light btn col s12' value='Log time'/>
+      <div class='row' v-if='saveState !== "saving" && state === "new"'>
+        <input type='submit' class='waves-effect waves-light btn col s12' value='Hinzufügen'/>
       </div>
+      <div class="row" v-if='saveState !== "saving" && state === "edit"'>
+        <input type='submit' class='waves-effect waves-light btn col s6' value='Speichern'/>
+        <button class="btn grey waves-effect waves-light col s6" v-on:click="setState('new', null)">Abbrechen
+        </button>
+      </div>
+
     </form>
 
     <div v-if='saveState === "saving"'>
@@ -29,34 +52,24 @@
     </div>
 
     <div v-if='recordsState === "loaded"'>
-      <table>
-        <thead>
-        <tr>
-          <th data-field='nr'>Nr</th>
-          <th data-field='tag'>Tag</th>
-          <th data-field='baustelle'>Baustelle</th>
-          <th data-field='art'>Art</th>
-          <th data-field='von'>Von</th>
-          <th data-field='bis'>Bis</th>
-          <th data-field='pause'>Pause</th>
-          <th data-field='gesamt'>Gesamt
-            <a href='#' @click.prevent='refreshRecords' class='right' title='refresh'>&#x21bb;</a>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for='record in lastRecords'>
-          <td>{{record[0]}}</td>
-          <td>{{record[1]}}</td>
-          <td>{{record[2]}}</td>
-          <td>{{record[3]}}</td>
-          <td>{{record[4]}}</td>
-          <td>{{record[5]}}</td>
-          <td>{{record[6]}}</td>
-          <td>{{record[7]}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <div>
+        <a href='#' @click.prevent='refreshRecords' title='refresh'>&#x21bb; Refresh</a>
+      </div>
+
+      <div>
+        <ul class="collection">
+          <li v-for='record in lastRecords' class="collection-item">
+            <span class="title">{{record[2]}} ({{record[3]}})</span>
+            <p>{{record[1]}}<br>
+              {{record[4]}} - {{record[5]}} <br>
+              {{record[6]}} Minuten Pause
+            </p>
+            <a href='javascript:void(0)' v-on:click="setState('edit', record)"><i class="material-icons">edit</i></a>
+            <span class="new badge secondary content" data-badge-caption="">{{record[0]}}</span>
+          </li>
+        </ul>
+      </div>
+
       <div class='fixed-action-btn' style='bottom: 12px; right: 12px;'>
         <a class='btn-floating btn-small red' :href='editLink' title='Edit records...' target='_blank'>
           <i class='small material-icons'>mode_edit</i>
@@ -74,6 +87,8 @@
 </template>
 
 <script>
+  /* eslint-disable prefer-template,no-alert */
+
   // This is the heart of the application. This file may not be the prettiest.
   import appModel from './lib/appModel.js';
   import {getError, logTime, getSheetTitle} from './lib/goog.js';
@@ -85,6 +100,8 @@
   export default {
     data() {
       return {
+        state: 'new',
+        editingId: -1,
         recordsState: 'loading',
         lastRecords: [],
         tag: '',
@@ -125,28 +142,54 @@
     },
 
     methods: {
+      setState(state, editingItem) {
+        this.state = state;
+
+        if (editingItem) {
+          this.editingId = editingItem[0];
+          let d = editingItem[1].split('.');
+          this.tag = d[2] + '-' + d[1] + '-' + d[0];
+          this.baustelle = editingItem[2];
+          this.art = editingItem[3];
+          this.von = editingItem[4];
+          this.bis = editingItem[5];
+          this.pause = editingItem[6];
+          this.error = '';
+        } else {
+          this.resetState();
+        }
+      },
+
       refreshRecords() {
         getLastRecordsForComponent(this);
       },
 
-      logIt() {
-        this.saveState = 'saving';
+      resetState() {
+        this.tag = '';
+        this.baustelle = '';
+        this.art = '';
+        this.von = '';
+        this.bis = '';
+        this.pause = '';
+        this.gesamt = '';
 
+        this.saveState = 'done';
+        this.error = '';
+      },
+
+      isNotEmpty() {
+        return this.tag && this.baustelle && this.art &&
+          this.von && this.bis && this.pause && this.gesamt;
+      },
+
+      logIt() {
         const tag = convertDateToSheetsDateOnlyString(this.tag);
         const spreadsheetId = getSpreadsheetIdFromComponentRoute(this);
+        if (this.isNotEmpty()) {
+          if (this.state === 'new') {
+            this.saveState = 'saving';
 
-        logTime(spreadsheetId,
-          this.lastRecords.length + 1,
-          tag,
-          this.baustelle,
-          this.art,
-          this.von,
-          this.bis,
-          this.pause,
-          this.gesamt)
-          .then(() => {
-            // TODO: This is not very reliable.
-            this.lastRecords.unshift([
+            logTime(spreadsheetId,
               this.lastRecords.length + 1,
               tag,
               this.baustelle,
@@ -154,24 +197,32 @@
               this.von,
               this.bis,
               this.pause,
-              this.gesamt
-            ]);
+              this.gesamt)
+              .then(() => {
+                // TODO: This is not very reliable.
+                this.lastRecords.unshift([
+                  this.lastRecords.length + 1,
+                  tag,
+                  this.baustelle,
+                  this.art,
+                  this.von,
+                  this.bis,
+                  this.pause,
+                  this.gesamt
+                ]);
 
-            // reset everything here
-            this.tag = '';
-            this.baustelle = '';
-            this.art = '';
-            this.von = '';
-            this.bis = '';
-            this.pause = '';
-            this.gesamt = '';
+                // reset everything here
+                this.resetState();
+              }, response => {
+                this.saveState = 'error';
+                this.error = getError(response);
+              });
+          } else {
+            // later: this.saveState = 'saving';
 
-            this.saveState = 'done';
-            this.error = '';
-          }, response => {
-            this.saveState = 'error';
-            this.error = getError(response);
-          });
+            alert(this.state);
+          }
+        }
       },
     },
   };
