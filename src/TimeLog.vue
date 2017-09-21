@@ -71,6 +71,8 @@
               {{record[6]}} Minuten Pause
             </p>
             <a href='javascript:void(0)' v-on:click="setState('edit', record)"><i class="material-icons">edit</i></a>
+            <a href='javascript:void(0)' v-on:click="removeRow(record[0])"><i class="material-icons">remove_circle_outline</i></a>
+
             <span class="new badge secondary content" data-badge-caption="">{{record[0]}}</span>
           </li>
         </ul>
@@ -93,11 +95,11 @@
 </template>
 
 <script>
-  /* eslint-disable prefer-template,no-alert */
+  /* eslint-disable prefer-template,no-alert,no-undef */
 
   // This is the heart of the application. This file may not be the prettiest.
   import appModel from './lib/appModel.js';
-  import {getError, logTime, getSheetTitle} from './lib/goog.js';
+  import {getError, logTime, resetTime, updateTime, removeRow, getSheetTitle} from './lib/goog.js';
   import {convertDateToSheetsDateOnlyString} from './lib/dateUtils.js';
   import getLastRecordsForComponent from './lib/getLastRecordsForComponent.js';
   import getSpreadsheetIdFromComponentRoute from './lib/getSpreadsheetIdFromComponentRoute.js';
@@ -160,8 +162,8 @@
           this.tag = d[2] + '-' + d[1] + '-' + d[0];
           this.baustelle = editingItem[2];
           this.art = editingItem[3];
-          this.von = editingItem[4];
-          this.bis = editingItem[5];
+          this.von = resetTime(editingItem[4]);
+          this.bis = resetTime(editingItem[5]);
           this.pause = editingItem[6];
           this.error = '';
         } else {
@@ -190,6 +192,20 @@
           this.von && this.von !== 'Von' &&
           this.bis && this.bis !== 'Bis' &&
           this.pause;
+      },
+
+      removeRow(removeId) {
+        if (confirm('Eintrag wirklich löschen?')) {
+          if (removeId !== undefined) {
+            const spreadsheetId = getSpreadsheetIdFromComponentRoute(this);
+            this.saveState = 'saving';
+
+            removeRow(spreadsheetId, removeId).then(() => {
+              this.saveState = 'done';
+              this.refreshRecords();
+            });
+          }
+        }
       },
 
       logIt() {
@@ -226,9 +242,23 @@
                 this.error = getError(response);
               });
           } else {
-            // later: this.saveState = 'saving';
+            this.saveState = 'saving';
 
-            alert(this.state);
+            updateTime(spreadsheetId,
+              this.editingId,
+              tag,
+              this.baustelle,
+              this.art,
+              this.von,
+              this.bis,
+              this.pause)
+              .then(() => {
+                this.refreshRecords();
+                this.resetState();
+              }, response => {
+                this.saveState = 'error';
+                this.error = getError(response);
+              });
           }
         }
       },

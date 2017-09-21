@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /**
  * The file provides a wrapper on top of Google API.
  */
@@ -121,6 +122,49 @@ export function logTime(spreadsheetId,
       pause]],
   }).then(id, checkError);
 }
+
+function getRowById(_id) {
+  let c = (3 + parseInt(_id, 10));
+  return 'A' + c + ':H' + c;
+}
+
+export function resetTime(t) {
+  return t.slice(0, 5);
+}
+
+export function removeRow(spreadsheetId, removeId) {
+  return gapi.client.sheets.spreadsheets.values.clear({
+    spreadsheetId,
+    range: getRowById(removeId)
+  }).then(id, checkError);
+}
+
+/**
+ * Appends log entry to the given spreadsheet.
+ */
+export function updateTime(spreadsheetId,
+                           _id,
+                           tag,
+                           baustelle,
+                           art,
+                           von,
+                           bis,
+                           pause) {
+  return gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId,
+    valueInputOption: 'USER_ENTERED',
+    range: getRowById(_id),
+    values: [[
+      _id,
+      tag,
+      baustelle,
+      art,
+      resetTime(von),
+      resetTime(bis),
+      pause]],
+  }).then(id, checkError);
+}
+
 
 /**
  * Creates a new spreadsheet file with a given name.
