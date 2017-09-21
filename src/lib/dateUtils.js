@@ -13,6 +13,16 @@ export function convertDateToSheetsDateString(str) {
     .replace(/-/g, '/');
 }
 
+
+/**
+ * Given a string, attempts to parse it
+ */
+export function convertDateToSheetsDateOnlyString(str) {
+  const dateObject = new Date(str + 'Z');
+
+  return dateObject.getDate() + '.' + (dateObject.getMonth() + 1) + '.' + dateObject.getFullYear();
+}
+
 /**
  * returns current time as an <input type='datetime-local'/> value.
  */
@@ -28,11 +38,11 @@ export function getNow() {
 export function toDateInputStr(date) {
   /* eslint prefer-template: 0 */
   return date.getFullYear() +
-        '-' + pad(date.getMonth() + 1) +
-        '-' + pad(date.getDate()) +
-        'T' + pad(date.getHours()) +
-        ':' + pad(date.getMinutes()) +
-        ':' + pad(date.getSeconds());
+    '-' + pad(date.getMonth() + 1) +
+    '-' + pad(date.getDate()) +
+    'T' + pad(date.getHours()) +
+    ':' + pad(date.getMinutes()) +
+    ':' + pad(date.getSeconds());
 }
 
 function pad(number) {

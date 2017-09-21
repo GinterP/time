@@ -2,10 +2,10 @@
   <div>
     <h4>{{sheetTitle}}</h4>
     <form novalidate @submit.prevent='logIt'>
-      <date-without-time label='Start' :value.sync='day'></date-without-time>
+      <date-without-time label='Tag' :value.sync='tag'></date-without-time>
       <div class='input-field'>
-        <label for='what'>What?</label>
-        <input id='what' type='text' v-model='what'>
+        <label for='baustelle'>Baustelle</label>
+        <input id='baustelle' type='text' v-model='baustelle'>
       </div>
 
       <div class='row' v-if='saveState !== "saving"'>
@@ -45,7 +45,6 @@
         </tr>
         </thead>
         <tbody>
-        {{lastRecords}}
         <tr v-for='record in lastRecords'>
           <td>{{record[0]}}</td>
           <td>{{record[1]}}</td>
@@ -78,7 +77,7 @@
   // This is the heart of the application. This file may not be the prettiest.
   import appModel from './lib/appModel.js';
   import {getError, logTime, getSheetTitle} from './lib/goog.js';
-  import {convertDateToSheetsDateString} from './lib/dateUtils.js';
+  import {convertDateToSheetsDateOnlyString} from './lib/dateUtils.js';
   import getLastRecordsForComponent from './lib/getLastRecordsForComponent.js';
   import getSpreadsheetIdFromComponentRoute from './lib/getSpreadsheetIdFromComponentRoute.js';
   import DateWithoutTime from './DateWithoutTime.vue';
@@ -88,7 +87,13 @@
       return {
         recordsState: 'loading',
         lastRecords: [],
-        day: '',
+        tag: '',
+        baustelle: '',
+        art: '',
+        von: '',
+        bis: '',
+        pause: '',
+        gesamt: '',
         saveState: '',
         sheetTitle: ''
       };
@@ -127,17 +132,39 @@
       logIt() {
         this.saveState = 'saving';
 
-        const day = convertDateToSheetsDateString(this.day);
+        const tag = convertDateToSheetsDateOnlyString(this.tag);
         const spreadsheetId = getSpreadsheetIdFromComponentRoute(this);
 
-        logTime(spreadsheetId, day)
+        logTime(spreadsheetId,
+          this.lastRecords.length + 1,
+          tag,
+          this.baustelle,
+          this.art,
+          this.von,
+          this.bis,
+          this.pause,
+          this.gesamt)
           .then(() => {
             // TODO: This is not very reliable.
-            this.lastRecords.unshift([day]);
+            this.lastRecords.unshift([
+              this.lastRecords.length + 1,
+              tag,
+              this.baustelle,
+              this.art,
+              this.von,
+              this.bis,
+              this.pause,
+              this.gesamt
+            ]);
 
             // reset everything here
-            this.day = '';
-
+            this.tag = '';
+            this.baustelle = '';
+            this.art = '';
+            this.von = '';
+            this.bis = '';
+            this.pause = '';
+            this.gesamt = '';
 
             this.saveState = 'done';
             this.error = '';

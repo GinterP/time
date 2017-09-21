@@ -99,12 +99,28 @@ export function fetchLastRecords(spreadsheetId) {
 /**
  * Appends log entry to the given spreadsheet.
  */
-export function logTime(spreadsheetId, start, end, what) {
+export function logTime(spreadsheetId,
+                        _id,
+                        tag,
+                        baustelle,
+                        art,
+                        von,
+                        bis,
+                        pause,
+                        gesamt) {
   return gapi.client.sheets.spreadsheets.values.append({
     spreadsheetId,
     valueInputOption: 'USER_ENTERED',
     range: TIME_RANGE,
-    values: [[start, end, what]],
+    values: [[
+      _id,
+      tag,
+      baustelle,
+      art,
+      von,
+      bis,
+      pause,
+      gesamt]],
   }).then(id, checkError);
 }
 
@@ -228,7 +244,9 @@ function get(obj, path) {
   return obj;
 }
 
-function id(x) { return x; }
+function id(x) {
+  return x;
+}
 
 function checkError(response) {
   if (response.status === 401) {
