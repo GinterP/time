@@ -17,7 +17,7 @@ export default function getLastRecordsForComponent(component) {
       component.recordsState = 'loaded';
 
       const values = response.result.values || [];
-      const lastRecords = values.reverse().slice(0, 100);
+      const lastRecords = values.reverse().slice(0, 200);
 
       component.lastRecords = lastRecords;
       const lastDate = getLastDate(lastRecords);

@@ -24,7 +24,7 @@ const CLIENT_ID = '616901175953-k3qnrg34f7khs5a688k8l51oqn4f15o1.apps.googleuser
 // 2    records go here
 //
 // So, our final range is:
-const TIME_RANGE = 'A2:C'
+const TIME_RANGE = 'A4:H';
 
 const SCOPES = [
   // We need this to list all spreadsheet files

@@ -3,15 +3,13 @@
     <div class="navbar-fixed">
       <nav>
         <div class='nav-wrapper'>
-          <a href='#' class='brand-logo'>{{pageName}}</a>
+          <a href='#' class='brand-logo'><i class='material-icons'>home</i></a>
           <a href='#' data-activates='mobile-demo' class='button-collapse'><i class='material-icons'>menu</i></a>
           <ul id='nav-mobile' class='right hide-on-med-and-down'>
-            <li v-if='authenticated'><a href='#' @click.prevent='onSignOutClick'>Sign out</a></li>
-            <li><a href='https://github.com/anvaka/time'>Source code</a></li>
+            <li v-if='authenticated'><a href='#' @click.prevent='onSignOutClick'>Abmelden</a></li>
           </ul>
           <ul class='side-nav' id='mobile-demo'>
-            <li v-if='authenticated'><a href='#' @click.prevent='onSignOutClick'>Sign out</a></li>
-            <li><a href='https://github.com/anvaka/time'>Source code</a></li>
+            <li v-if='authenticated'><a href='#' @click.prevent='onSignOutClick'>Abmelden</a></li>
           </ul>
         </div>
       </nav>
@@ -24,16 +22,8 @@
         <router-view class='view' keep-alive></router-view>
       </div>
       <div v-if='needsAuthentication'>
-        <h1>Welcome!</h1>
-        <p>
-          This is a simple interface to Google Sheets, that allows you to
-          log your time. Log it here, and analyze from Google Sheets later
-        </p>
-        <a class='waves-effect waves-light btn' @click='onSignInClick'>Sign in to Google Sheets</a>
-        <div>
-          <h4>Demo</h4>
-        <iframe src="https://www.youtube.com/embed/5e8K0LMdTmw" frameborder="0" allowfullscreen class='video-demo'></iframe>
-        </div>
+        <h1>Anmeldung</h1>
+        <a class='waves-effect waves-light btn' @click='onSignInClick'>Zu Google Sheets</a>
       </div>
     </div>
   </div>

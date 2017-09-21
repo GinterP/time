@@ -1,7 +1,7 @@
 <template>
   <div>
     <label>{{label}} <a href='#' v-clap.prevent='setNow()'>jetzt</a></label>
-    <input v-el:date type='datetime-local' v-model='value' data-input>
+    <input v-el:date type='date' v-model='value' data-input>
   </div>
 </template>
 <script>
@@ -16,10 +16,10 @@ export default {
     const self = this;
     const pickerConfig = {
       allowInput: true,
-      enableTime: true,
+      enableTime: false,
       time_24hr: true,
-      enableSeconds: true,
-      dateFormat: 'Y-m-dTH:i:S',
+      enableSeconds: false,
+      dateFormat: 'd.m.Y',
       utc: false,
 
       onChange() {
