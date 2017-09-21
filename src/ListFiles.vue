@@ -6,7 +6,7 @@
       </p>
     </div>
     <div v-if='filesLoaded && !empty'>
-      <h4>Your Sheets</h4>
+      <h4>Deine Tabellen</h4>
       <div class="collection">
         <a class="collection-item"
            v-for='file in files'

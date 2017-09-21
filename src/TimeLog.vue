@@ -183,6 +183,7 @@
         this.bis = '';
         this.pause = '';
 
+        this.state = 'new';
         this.saveState = 'done';
         this.error = '';
       },
