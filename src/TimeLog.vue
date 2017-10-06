@@ -71,8 +71,9 @@
               {{record[6]}} Minuten Pause
             </p>
             <a href='javascript:void(0)' v-on:click="setState('edit', record)"><i class="material-icons">edit</i></a>
+            <!--
             <a href='javascript:void(0)' v-on:click="removeRow(record[0])"><i class="material-icons">remove_circle_outline</i></a>
-
+            -->
             <span class="new badge secondary content" data-badge-caption="">{{record[0]}}</span>
           </li>
         </ul>

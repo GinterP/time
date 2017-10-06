@@ -2,7 +2,7 @@
   "name": "time",
   "version": "1.0.0",
   "description": "A time tracking input form into google sheets",
-  "author": "anvaka <anvaka@gmail.com>",
+  "author": "",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
