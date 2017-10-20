@@ -1,5 +1,7 @@
 /**
  * This is a template for the default spreadsheet.
+ * more to be found here
+ * https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets?hl=pl#Spreadsheet
  */
 export default function createLogTemplate(name) {
   return {

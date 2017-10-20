@@ -176,7 +176,6 @@ export function createSpreadsheet(name) {
       id: result.spreadsheetId,
       name
     });
-
     return result;
   }, checkError);
 }
@@ -262,7 +261,7 @@ function listTimeSheetFiles() {
     pageSize: 100,
   }).execute(response => {
     appModel.filesLoaded = true;
-    appModel.files = response.files;
+    appModel.files = response.files.filter(re => re.name.indexOf('GSHK') > -1);
     makeTitleIndex(response.files);
   }, checkError);
 }

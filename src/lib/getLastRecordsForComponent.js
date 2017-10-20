@@ -16,6 +16,8 @@ export default function getLastRecordsForComponent(component) {
       // we've got our data!
       component.recordsState = 'loaded';
 
+      console.log(response);
+
       const values = response.result.values || [];
       const lastRecords = values.reverse().slice(0, 200);
 

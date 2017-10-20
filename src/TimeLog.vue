@@ -158,6 +158,8 @@
         this.state = state;
 
         if (editingItem) {
+          $('html, body').animate({scrollTop: 0});
+          // window.scrollTo(0, 0);
           this.editingId = editingItem[0];
           let d = editingItem[1].split('.');
           this.tag = d[2] + '-' + d[1] + '-' + d[0];

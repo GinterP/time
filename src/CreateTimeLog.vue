@@ -3,10 +3,10 @@
     <h3>Neue Tabelle erstellen</h3>
     <form @submit.prevent='create'>
       <div class='input-field'>
-        <label for='name'>Dateiname:</label>
+        <label for='name'>Arbeiter (Vorname):</label>
         <input id='name' type='text' v-model='name' autofocus>
       </div>
-      <input type='submit' class='waves-effect waves-light btn col s12' value='Create new file' v-if='status === ""'/>
+      <input type='submit' class='waves-effect waves-light btn col s12' value='Neue Datei anlegen' v-if='status === ""'/>
     </form>
 
     <div v-if='status === "saving"'>
