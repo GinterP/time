@@ -50,11 +50,8 @@
     </div>
 
     <div v-if='saveState === "error"' class='card-panel red-text'>
-      <h4>Error</h4>
+      <!-- <h4>Error</h4> -->
       <pre><code>{{error}}</code></pre>
-      <div>
-        Refresh the page maybe?
-      </div>
     </div>
 
     <div v-if='recordsState === "loaded"'>
