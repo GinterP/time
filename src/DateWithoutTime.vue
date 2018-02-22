@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label>{{label}} <a href='#' v-clap.prevent='setNow()'>jetzt</a></label>
+    <label>{{label}} <a href='#' v-clap.prevent='setNow()'>Heute</a></label>
     <input v-el:date type='date' v-model='value' data-input>
   </div>
 </template>
