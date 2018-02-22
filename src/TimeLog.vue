@@ -156,6 +156,8 @@
       setState(state, editingItem) {
         this.state = state;
 
+        this.artChanged();
+
         if (editingItem) {
           $('html, body').animate({scrollTop: 0});
           // window.scrollTo(0, 0);
