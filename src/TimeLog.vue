@@ -12,7 +12,7 @@
         </div>
         <!-- Art -->
         <div class="">
-          <select id='art' v-model='art' class="browser-default">
+          <select id='art' v-model='art' @change="artChanged()" class="browser-default">
             <option value='Arbeit' selected>Arbeit</option>
             <option value='Lager / Werkstatt'>Lager / Werkstatt</option>
             <option value='Weiterbildung'>Weiterbildung</option>
@@ -192,10 +192,13 @@
       },
 
       isNotEmpty() {
+        // if (this.art === 'Arbeit' || this.art === 'Lager / Werkstatt'
+        // || this.art === 'Weiterbildung') {
         return this.tag && this.baustelle && this.art &&
           this.von && this.von !== 'Von' &&
           this.bis && this.bis !== 'Bis' &&
           this.pause;
+        // }
       },
 
       removeRow(removeId) {
@@ -210,6 +213,9 @@
             });
           }
         }
+      },
+      artChanged() {
+        console.log('changed');
       },
 
       logIt() {
