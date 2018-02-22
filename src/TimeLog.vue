@@ -8,7 +8,7 @@
         <!-- Baustelle -->
         <div class='input-field'>
           <label class="active" for='baustelle'>Baustelle</label>
-          <input id='baustelle' type='text' v-model='baustelle'>
+          <input id='baustelle' type='text' v-model='baustelle' disabled="{{artEnabled}}">
         </div>
         <!-- Art -->
         <div class="">
@@ -23,7 +23,7 @@
           <label for='art'>Art</label>
         </div>
         <!-- Von -->
-        <time label='Von' :value.sync='von'></time>
+        <time disabled='{{artEnabled}}' label='Von' :value.sync='von'></time>
         <!-- Bis -->
         <time label='Bis' :value.sync='bis'></time>
         <!-- Pause -->
@@ -122,7 +122,8 @@
         bis: '',
         pause: '',
         saveState: '',
-        sheetTitle: ''
+        sheetTitle: '',
+        artEnabled: true
       };
     },
     computed: {
@@ -192,13 +193,21 @@
       },
 
       isNotEmpty() {
-        // if (this.art === 'Arbeit' || this.art === 'Lager / Werkstatt'
-        // || this.art === 'Weiterbildung') {
+        if (!this.artEnabled) {
+          this.setNull();
+        }
         return this.tag && this.baustelle && this.art &&
           this.von && this.von !== 'Von' &&
           this.bis && this.bis !== 'Bis' &&
           this.pause;
         // }
+      },
+
+      setNull() {
+        this.von = '00:00';
+        this.bis = '00:00';
+        this.pause = '0';
+        this.baustelle = this.art;
       },
 
       removeRow(removeId) {
@@ -216,6 +225,11 @@
       },
       artChanged() {
         console.log('changed');
+        if (this.art === 'Arbeit' || this.art === 'Lager / Werkstatt' || this.art === 'Weiterbildung') {
+          this.artEnabled = true;
+        } else {
+          this.artEnabled = false;
+        }
       },
 
       logIt() {
