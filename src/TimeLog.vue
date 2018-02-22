@@ -50,7 +50,7 @@
     </div>
 
     <div v-if='saveState === "error"' class='card-panel red-text'>
-      <h4>Error...</h4>
+      <h4>Error</h4>
       <pre><code>{{error}}</code></pre>
       <div>
         Refresh the page maybe?
@@ -123,7 +123,8 @@
         pause: '',
         saveState: '',
         sheetTitle: '',
-        artEnabled: true
+        artEnabled: true,
+        error: ''
       };
     },
     computed: {
@@ -296,6 +297,9 @@
                 this.error = getError(response);
               });
           }
+        } else {
+          // isEmpty
+          this.error = 'Bei der Eingabe fehlt etwas!';
         }
       },
     },
