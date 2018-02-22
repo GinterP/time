@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <select id="label" v-model='value' class="browser-default">
+    <select id="label" :disabled='disabled' v-model='value' class="browser-default">
       <option value='' disabled selected>{{label}}</option>
       <option value='0'>0 Minuten</option>
       <option value='5'>5 Minuten</option>
@@ -33,7 +33,7 @@
 </template>
 <script>
   export default {
-    props: ['label', 'value']
+    props: ['label', 'value', 'disabled']
   };
 
 </script>

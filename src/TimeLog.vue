@@ -8,7 +8,7 @@
         <!-- Baustelle -->
         <div class='input-field'>
           <label class="active" for='baustelle'>Baustelle</label>
-          <input id='baustelle' type='text' v-model='baustelle' disabled="{{artEnabled}}">
+          <input id='baustelle' type='text' v-model='baustelle' :disabled="!artEnabled">
         </div>
         <!-- Art -->
         <div class="">
@@ -23,11 +23,11 @@
           <label for='art'>Art</label>
         </div>
         <!-- Von -->
-        <time disabled='{{artEnabled}}' label='Von' :value.sync='von'></time>
+        <time :disabled='!artEnabled' label='Von' :value.sync='von'></time>
         <!-- Bis -->
-        <time label='Bis' :value.sync='bis'></time>
+        <time :disabled='!artEnabled' label='Bis' :value.sync='bis'></time>
         <!-- Pause -->
-        <pause label='Pause' :value.sync='pause'></pause>
+        <pause :disabled='!artEnabled' label='Pause' :value.sync='pause'></pause>
 
       </div>
 

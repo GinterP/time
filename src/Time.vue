@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <select id="label" disabled='{{disabled}}' v-model='value' class="browser-default">
+    <select id="label" :disabled='disabled' v-model='value' class="browser-default">
       <option value='' disabled selected>{{label}}</option>
       <option value='06:00'>06:00 Uhr</option>
       <option value='06:15'>06:15 Uhr</option>
