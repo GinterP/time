@@ -194,7 +194,11 @@
 
       isNotEmpty() {
         if (!this.artEnabled) {
-          this.setNull();
+          if (this.art === 'Überstunden') {
+            this.setNull();
+          } else if (this.art === 'Krank' || this.art === 'Urlaub' || this.art === 'Feiertag') {
+            this.setTo8();
+          }
         }
         return this.tag && this.baustelle && this.art &&
           this.von && this.von !== 'Von' &&
@@ -206,6 +210,13 @@
       setNull() {
         this.von = '00:00';
         this.bis = '00:00';
+        this.pause = '0';
+        this.baustelle = this.art;
+      },
+
+      setTo8() {
+        this.von = '07:30';
+        this.bis = '15:30';
         this.pause = '0';
         this.baustelle = this.art;
       },

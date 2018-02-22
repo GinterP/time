@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <select id="label" :disabled='disabled' v-model='value' class="browser-default">
+    <select id="label" :disabled='disabled' v-model='value' class="browser-default select-pause">
       <option value='' disabled selected>{{label}}</option>
       <option value='0'>0 Minuten</option>
       <option value='5'>5 Minuten</option>
