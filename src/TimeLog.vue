@@ -190,6 +190,7 @@
         this.state = 'new';
         this.saveState = 'done';
         this.error = '';
+        this.artEnabled = true;
       },
 
       isNotEmpty() {
