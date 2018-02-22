@@ -299,6 +299,7 @@
           }
         } else {
           // isEmpty
+          this.saveState = 'error';
           this.error = 'Bei der Eingabe fehlt etwas!';
         }
       },
