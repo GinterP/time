@@ -56,7 +56,7 @@
 
     <div v-if='recordsState === "loaded"'>
       <div>
-        <a href='#' @click.prevent='refreshRecords' title='refresh'>&#x21bb; Refresh</a>
+        <a href='#' @click.prevent='refreshRecords' title='refresh'>&#x21bb; Einträge Neuladen</a>
       </div>
 
       <div>
@@ -156,7 +156,6 @@
       setState(state, editingItem) {
         this.state = state;
 
-        this.artChanged();
 
         if (editingItem) {
           $('html, body').animate({scrollTop: 0});
@@ -173,6 +172,7 @@
         } else {
           this.resetState();
         }
+        this.artChanged();
       },
 
       refreshRecords() {
