@@ -66,7 +66,6 @@
             <p>
               {{record[4]}} - {{record[5]}} Uhr<br>
               {{record[6]}} Minuten Pause <br>
-              ({{record[3]}})
             </p>
             <a href='javascript:void(0)' v-on:click="setState('edit', record)"><i class="material-icons">edit</i></a>
             <!--
@@ -77,11 +76,13 @@
         </ul>
       </div>
 
+      <!--
       <div class='fixed-action-btn' style='bottom: 12px; right: 12px;'>
         <a class='btn-floating btn-small red' :href='editLink' title='Edit records...' target='_blank'>
           <i class='small material-icons'>mode_edit</i>
         </a>
       </div>
+      -->
     </div>
 
     <div v-if='recordsState === "loading"'>
