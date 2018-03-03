@@ -61,7 +61,7 @@
 
       <div>
         <ul class="collection">
-          <li v-for='record in lastRecords' class="collection-item">
+          <li v-for='record in lastRecords' class="collection-item" v-bind:class="{ 'odd': record[0] % 2 === 1 }">
             <span class="title">{{record[1]}}<br>{{record[2]}}</span>
             <p>
               {{record[4]}} - {{record[5]}} Uhr<br>
