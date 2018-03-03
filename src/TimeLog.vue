@@ -62,10 +62,11 @@
       <div>
         <ul class="collection">
           <li v-for='record in lastRecords' class="collection-item">
-            <span class="title">{{record[2]}} ({{record[3]}})</span>
-            <p>{{record[1]}}<br>
-              {{record[4]}} - {{record[5]}} <br>
-              {{record[6]}} Minuten Pause
+            <span class="title">{{record[1]}}<br>{{record[2]}}</span>
+            <p>
+              {{record[4]}} - {{record[5]}} Uhr<br>
+              {{record[6]}} Minuten Pause <br>
+              ({{record[3]}})
             </p>
             <a href='javascript:void(0)' v-on:click="setState('edit', record)"><i class="material-icons">edit</i></a>
             <!--
